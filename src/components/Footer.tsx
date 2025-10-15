@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 
 const Footer = () => {
@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="font-heading text-2xl font-bold text-primary">
+            <Link href="/" className="font-heading text-2xl font-bold text-primary">
               Elevate
             </Link>
             <p className="text-sm text-muted-foreground">
@@ -21,17 +21,17 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/shop" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Shop All
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Contact
                 </Link>
               </li>
@@ -43,22 +43,22 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground mb-4">Categories</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/shop?category=mindset" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/shop?category=mindset" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Mindset
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=productivity" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/shop?category=productivity" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Productivity
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=confidence" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/shop?category=confidence" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Confidence
                 </Link>
               </li>
               <li>
-                <Link to="/shop?category=happiness" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/shop?category=happiness" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Happiness
                 </Link>
               </li>

@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import authorPhoto from "@/assets/author-photo.jpg";
 
 const About = () => {
@@ -120,12 +120,12 @@ const About = () => {
                 becoming their best selves.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/shop">
-                  <Button size="lg" className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-semibold shadow-lg hover:shadow-xl transition-all">
+                <Link href="/shop">
+                  <Button size="lg" className="bg-primary hover:bg-primary-glow">
                     Explore Our Collection
                   </Button>
                 </Link>
-                <Link to="/contact">
+                <Link href="/contact">
                   <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
                     Get in Touch
                   </Button>

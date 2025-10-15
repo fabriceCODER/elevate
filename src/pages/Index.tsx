@@ -4,7 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { products } from "@/data/products";
 
 const Index = () => {
@@ -61,7 +61,7 @@ const Index = () => {
             </div>
 
             <div className="text-center">
-              <Link to="/shop">
+              <Link href="/shop">
                 <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
                   View All Products
                 </Button>
@@ -82,7 +82,7 @@ const Index = () => {
                 Our carefully curated collection of eBooks and courses provides you with 
                 the tools, strategies, and inspiration you need to unlock your full potential.
               </p>
-              <Link to="/about">
+              <Link href="/about">
                 <Button size="lg" className="bg-primary hover:bg-primary-glow">
                   Our Story
                 </Button>
@@ -120,9 +120,9 @@ const Index = () => {
             <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
               Explore our collection and find the perfect guide to help you achieve your goals
             </p>
-            <Link to="/shop">
+            <Link href="/shop">
               <Button size="lg" className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-semibold shadow-lg hover:shadow-xl transition-all">
-                Start Exploring
+                Shop All Books
               </Button>
             </Link>
           </div>

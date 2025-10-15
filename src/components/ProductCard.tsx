@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 interface ProductCardProps {
   id: string;
@@ -33,7 +33,7 @@ const ProductCard = ({
 }: ProductCardProps) => {
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 animate-scale-in bg-gradient-to-b from-card to-card/50">
-      <Link to={`/product/${id}`}>
+      <Link href={`/product/${id}`}>
         <div className="relative aspect-[3/4] overflow-hidden bg-muted">
           {featured && (
             <Badge className="absolute top-3 left-3 z-10 bg-accent text-accent-foreground">
@@ -52,7 +52,7 @@ const ProductCard = ({
         <Badge variant="secondary" className="text-xs">
           {category}
         </Badge>
-        <Link to={`/product/${id}`}>
+        <Link href={`/product/${id}`}>
           <h3 className="font-heading font-semibold text-lg text-foreground group-hover:text-primary transition-colors line-clamp-2">
             {title}
           </h3>

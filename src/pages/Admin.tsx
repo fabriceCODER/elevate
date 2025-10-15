@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -12,17 +13,12 @@ import { useToast } from "@/hooks/use-toast";
 import { Product } from "@/data/products";
 import useProducts from "@/hooks/useProducts";
 
-const ADMIN_CREDENTIALS = {
-  username: "admin",
-  password: "password123"
-};
-
 const Admin = () => {
-  const navigate = useNavigate();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const { toast } = useToast();
   const { addProduct } = useProducts();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [formData, setFormData] = useState<Omit<Product, 'id'>>({
     title: "",
@@ -45,41 +41,110 @@ const Admin = () => {
   const categories = ["Mindset", "Productivity", "Confidence", "Happiness"];
 
   useEffect(() => {
-    const authStatus = localStorage.getItem("adminAuthenticated");
-    if (authStatus === "true") {
-      setIsAuthenticated(true);
+    if (status === "loading") return; // Still loading
+    if (status === "unauthenticated") {
+      // User is not authenticated, show login
     }
-  }, []);
+  }, [status]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loginData.username === ADMIN_CREDENTIALS.username &&
-        loginData.password === ADMIN_CREDENTIALS.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem("adminAuthenticated", "true");
-      toast({
-        title: "Login Successful",
-        description: "Welcome to the admin portal!",
-      });
-    } else {
+    const result = await signIn("credentials", {
+      username: loginData.username,
+      password: loginData.password,
+      redirect: false,
+    });
+
+    if (result?.error) {
       toast({
         title: "Login Failed",
         description: "Invalid username or password.",
         variant: "destructive",
       });
+    } else {
+      toast({
+        title: "Login Successful",
+        description: "Welcome to the admin portal!",
+      });
     }
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("adminAuthenticated");
-    setLoginData({ username: "", password: "" });
+    signOut();
     toast({
       title: "Logged Out",
       description: "You have been logged out successfully.",
     });
   };
 
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+
+        <main className="flex-grow py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md mx-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Admin Login</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        type="text"
+                        value={loginData.username}
+                        onChange={(e) => setLoginData(prev => ({ ...prev, username: e.target.value }))}
+                        placeholder="Enter username"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={loginData.password}
+                        onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
+                        placeholder="Enter password"
+                        required
+                      />
+                    </div>
+
+                    <Button type="submit" className="w-full">
+                      Login
+                    </Button>
+                  </form>
+
+                  <div className="mt-4 text-center">
+                    <Button variant="outline" onClick={() => router.push("/")}>
+                      Back to Home
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
+  // Authenticated admin interface
   const handleInputChange = (field: keyof Omit<Product, 'id'>, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -129,6 +194,9 @@ const Admin = () => {
         featured: false,
         description: "",
         benefits: [],
+        amazonUrl: "",
+        etsyUrl: "",
+        shopifyUrl: "",
       });
       setBenefitInput("");
     } catch (error) {
@@ -141,65 +209,6 @@ const Admin = () => {
       setIsSubmitting(false);
     }
   };
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-
-        <main className="flex-grow py-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md mx-auto">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Admin Login</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="username">Username</Label>
-                      <Input
-                        id="username"
-                        type="text"
-                        value={loginData.username}
-                        onChange={(e) => setLoginData(prev => ({ ...prev, username: e.target.value }))}
-                        placeholder="Enter username"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        value={loginData.password}
-                        onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
-                        placeholder="Enter password"
-                        required
-                      />
-                    </div>
-
-                    <Button type="submit" className="w-full">
-                      Login
-                    </Button>
-                  </form>
-
-                  <div className="mt-4 text-center">
-                    <Button variant="outline" onClick={() => navigate("/")}>
-                      Back to Home
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </main>
-
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -390,7 +399,7 @@ const Admin = () => {
                     <Button type="submit" disabled={isSubmitting} className="flex-1">
                       {isSubmitting ? "Adding Book..." : "Add Book"}
                     </Button>
-                    <Button type="button" variant="outline" onClick={() => navigate("/shop")}>
+                    <Button type="button" variant="outline" onClick={() => router.push("/shop")}>
                       Cancel
                     </Button>
                   </div>

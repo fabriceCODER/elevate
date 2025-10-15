@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
@@ -18,7 +19,7 @@ const ProductDetail = () => {
         <main className="flex-grow flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">Product Not Found</h1>
-            <Link to="/shop">
+            <Link href="/shop">
               <Button>Back to Shop</Button>
             </Link>
           </div>
