@@ -3,10 +3,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { products } from "@/data/products";
+import useProducts from "@/hooks/useProducts";
 
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const { products, loading } = useProducts();
 
   const categories = ["all", "Mindset", "Productivity", "Confidence", "Happiness"];
 
@@ -14,6 +15,18 @@ const Shop = () => {
     selectedCategory === "all"
       ? products
       : products.filter((p) => p.category === selectedCategory);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <p>Loading products...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
