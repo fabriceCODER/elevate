@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,11 +12,18 @@ import { useToast } from "@/hooks/use-toast";
 import { Product } from "@/data/products";
 import useProducts from "@/hooks/useProducts";
 
+const ADMIN_CREDENTIALS = {
+  username: "admin",
+  password: "password123"
+};
+
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { addProduct } = useProducts();
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginData, setLoginData] = useState({ username: "", password: "" });
   const [formData, setFormData] = useState<Omit<Product, 'id'>>({
     title: "",
     author: "",
@@ -27,12 +34,51 @@ const Admin = () => {
     featured: false,
     description: "",
     benefits: [],
+    amazonUrl: "",
+    etsyUrl: "",
+    shopifyUrl: "",
   });
 
   const [benefitInput, setBenefitInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const categories = ["Mindset", "Productivity", "Confidence", "Happiness"];
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem("adminAuthenticated");
+    if (authStatus === "true") {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (loginData.username === ADMIN_CREDENTIALS.username &&
+        loginData.password === ADMIN_CREDENTIALS.password) {
+      setIsAuthenticated(true);
+      localStorage.setItem("adminAuthenticated", "true");
+      toast({
+        title: "Login Successful",
+        description: "Welcome to the admin portal!",
+      });
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid username or password.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("adminAuthenticated");
+    setLoginData({ username: "", password: "" });
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out successfully.",
+    });
+  };
 
   const handleInputChange = (field: keyof Omit<Product, 'id'>, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -96,6 +142,65 @@ const Admin = () => {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+
+        <main className="flex-grow py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md mx-auto">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Admin Login</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="username">Username</Label>
+                      <Input
+                        id="username"
+                        type="text"
+                        value={loginData.username}
+                        onChange={(e) => setLoginData(prev => ({ ...prev, username: e.target.value }))}
+                        placeholder="Enter username"
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={loginData.password}
+                        onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
+                        placeholder="Enter password"
+                        required
+                      />
+                    </div>
+
+                    <Button type="submit" className="w-full">
+                      Login
+                    </Button>
+                  </form>
+
+                  <div className="mt-4 text-center">
+                    <Button variant="outline" onClick={() => navigate("/")}>
+                      Back to Home
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -107,8 +212,8 @@ const Admin = () => {
               <h1 className="font-heading text-4xl font-bold text-foreground">
                 Admin Portal
               </h1>
-              <Button variant="outline" onClick={() => navigate("/shop")}>
-                Back to Shop
+              <Button variant="outline" onClick={handleLogout}>
+                Logout
               </Button>
             </div>
 
@@ -193,6 +298,38 @@ const Admin = () => {
                         value={formData.image}
                         onChange={(e) => handleInputChange("image", e.target.value)}
                         placeholder="Enter image URL"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="amazonUrl">Amazon URL</Label>
+                      <Input
+                        id="amazonUrl"
+                        value={formData.amazonUrl || ""}
+                        onChange={(e) => handleInputChange("amazonUrl", e.target.value)}
+                        placeholder="Enter Amazon product URL"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="etsyUrl">Etsy URL</Label>
+                      <Input
+                        id="etsyUrl"
+                        value={formData.etsyUrl || ""}
+                        onChange={(e) => handleInputChange("etsyUrl", e.target.value)}
+                        placeholder="Enter Etsy product URL"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="shopifyUrl">Shopify URL</Label>
+                      <Input
+                        id="shopifyUrl"
+                        value={formData.shopifyUrl || ""}
+                        onChange={(e) => handleInputChange("shopifyUrl", e.target.value)}
+                        placeholder="Enter Shopify product URL"
                       />
                     </div>
                   </div>

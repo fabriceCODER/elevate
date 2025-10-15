@@ -101,13 +101,34 @@ const ProductDetail = () => {
                 </ul>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-accent to-accent/90 hover:from-accent/90 hover:to-accent text-accent-foreground font-semibold shadow-lg hover:shadow-xl transition-all flex-1"
-                >
-                  Add to Cart - ${product.price}
-                </Button>
+              <div className="flex flex-col gap-4 pt-4">
+                {product.amazonUrl && (
+                  <Button
+                    size="lg"
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                    onClick={() => window.open(product.amazonUrl, '_blank')}
+                  >
+                    Buy on Amazon - ${product.price}
+                  </Button>
+                )}
+                {product.etsyUrl && (
+                  <Button
+                    size="lg"
+                    className="bg-orange-400 hover:bg-orange-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                    onClick={() => window.open(product.etsyUrl, '_blank')}
+                  >
+                    Buy on Etsy - ${product.price}
+                  </Button>
+                )}
+                {product.shopifyUrl && (
+                  <Button
+                    size="lg"
+                    className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+                    onClick={() => window.open(product.shopifyUrl, '_blank')}
+                  >
+                    Buy on Shopify - ${product.price}
+                  </Button>
+                )}
                 <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary/5">
                   Preview
                 </Button>

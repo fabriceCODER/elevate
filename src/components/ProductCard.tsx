@@ -13,6 +13,9 @@ interface ProductCardProps {
   rating: number;
   category: string;
   featured?: boolean;
+  amazonUrl?: string;
+  etsyUrl?: string;
+  shopifyUrl?: string;
 }
 
 const ProductCard = ({
@@ -24,6 +27,9 @@ const ProductCard = ({
   rating,
   category,
   featured = false,
+  amazonUrl,
+  etsyUrl,
+  shopifyUrl,
 }: ProductCardProps) => {
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 animate-scale-in bg-gradient-to-b from-card to-card/50">
@@ -65,11 +71,37 @@ const ProductCard = ({
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0 flex items-center justify-between">
+      <CardFooter className="p-4 pt-0 flex flex-col space-y-2">
         <span className="font-bold text-xl text-foreground">${price}</span>
-        <Button size="sm" className="bg-primary hover:bg-primary-glow">
-          Add to Cart
-        </Button>
+        <div className="flex flex-col space-y-1 w-full">
+          {amazonUrl && (
+            <Button
+              size="sm"
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+              onClick={() => window.open(amazonUrl, '_blank')}
+            >
+              Buy on Amazon
+            </Button>
+          )}
+          {etsyUrl && (
+            <Button
+              size="sm"
+              className="bg-orange-400 hover:bg-orange-500 text-white"
+              onClick={() => window.open(etsyUrl, '_blank')}
+            >
+              Buy on Etsy
+            </Button>
+          )}
+          {shopifyUrl && (
+            <Button
+              size="sm"
+              className="bg-green-600 hover:bg-green-700 text-white"
+              onClick={() => window.open(shopifyUrl, '_blank')}
+            >
+              Buy on Shopify
+            </Button>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

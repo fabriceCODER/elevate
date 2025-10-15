@@ -13,6 +13,9 @@ export interface Product {
   featured: boolean;
   description: string;
   benefits: string[];
+  amazonUrl?: string;
+  etsyUrl?: string;
+  shopifyUrl?: string;
 }
 
 export const products: Product[] = [
@@ -33,6 +36,9 @@ export const products: Product[] = [
       "Embrace challenges with confidence",
       "Create lasting positive change",
     ],
+    amazonUrl: "https://amazon.com/dp/B08N5WRWNW", // Example Amazon link
+    etsyUrl: "https://etsy.com/listing/1234567890/growth-mindset-ebook", // Example Etsy link
+    shopifyUrl: "https://yourstore.myshopify.com/products/growth-mindset", // Example Shopify link
   },
   {
     id: "2",
@@ -51,6 +57,9 @@ export const products: Product[] = [
       "Focus strategies",
       "Work-life balance methods",
     ],
+    amazonUrl: "https://amazon.com/dp/B08P3Q7X9Z",
+    etsyUrl: "https://etsy.com/listing/1234567891/productivity-mastery-ebook",
+    shopifyUrl: "https://yourstore.myshopify.com/products/productivity-mastery",
   },
   {
     id: "3",
@@ -69,6 +78,9 @@ export const products: Product[] = [
       "Speak with authority",
       "Authentic self-expression",
     ],
+    amazonUrl: "https://amazon.com/dp/B08Q3Q8X1Y",
+    etsyUrl: "https://etsy.com/listing/1234567892/confidence-unlocked-ebook",
+    shopifyUrl: "https://yourstore.myshopify.com/products/confidence-unlocked",
   },
   {
     id: "4",
@@ -87,6 +99,9 @@ export const products: Product[] = [
       "Emotional regulation",
       "Inner peace practices",
     ],
+    amazonUrl: "https://amazon.com/dp/B08R5R6P7Q",
+    etsyUrl: "https://etsy.com/listing/1234567893/mindful-living-ebook",
+    shopifyUrl: "https://yourstore.myshopify.com/products/mindful-living",
   },
   {
     id: "5",
@@ -105,6 +120,9 @@ export const products: Product[] = [
       "Progress tracking systems",
       "Motivation maintenance",
     ],
+    amazonUrl: "https://amazon.com/dp/B08S5S7T8U",
+    etsyUrl: "https://etsy.com/listing/1234567894/goal-setting-blueprint-ebook",
+    shopifyUrl: "https://yourstore.myshopify.com/products/goal-setting-blueprint",
   },
   {
     id: "6",
@@ -123,5 +141,8 @@ export const products: Product[] = [
       "Networking strategies",
       "Authentic connection",
     ],
+    amazonUrl: "https://amazon.com/dp/B08T6T9V9W",
+    etsyUrl: "https://etsy.com/listing/1234567895/social-mastery-ebook",
+    shopifyUrl: "https://yourstore.myshopify.com/products/social-mastery",
   },
 ];
